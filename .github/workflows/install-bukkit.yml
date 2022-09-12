@@ -2,7 +2,7 @@ name: install bukkit
 on: push
 env:
   repo: IngGameTeam/automate-bukkit
-  ver: 1.19
+  ver: 1.19.2
   ram: 6500M
 jobs:
   install-bukkit:
