@@ -1,13 +1,12 @@
 name: install bukkit
 on: push
 env:
-  repo: IngGameTeam/automate-bukkit
   ver: 1.19.2
   ram: 6500M
 jobs:
   install-bukkit:
-    runs-on: ubuntu-latest
-    # runs-on: [ self-hosted, mc-home ]
+#    runs-on: ubuntu-latest
+     runs-on: [ self-hosted ]
     steps:
       - name: Get branch name
         id: branch-name
@@ -17,8 +16,8 @@ jobs:
           rm -rf work
           mkdir work 
           cd work
-          git clone -b ${{ steps.branch-name.outputs.current_branch }} --single-branch https://${{ github.actor }}@github.com/${{ env.repo }}
-          dir_name=$(basename ${{ env.repo }} /)
+          git clone -b ${{ steps.branch-name.outputs.current_branch }} --single-branch https://${{ github.actor }}@github.com/${{ github.repository }}
+          dir_name=$(basename ${{ github.repository }} /)
           cd $dir_name
           mkdir out
           mkdir out/bukkit
@@ -26,7 +25,7 @@ jobs:
           git init
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git remote add origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ env.repo }}
+          git remote add origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           cd ..
           cd ..
           for file in bukkit; do
@@ -34,7 +33,7 @@ jobs:
           done
           cd out/bukkit
           cd bukkit
-          wget -O purpur.jar https://api.purpurmc.org/v2/purpur/1.19/latest/download
+          wget -O purpur.jar https://api.purpurmc.org/v2/purpur/${{ env.ver }}/latest/download
           bash plugins.txt
           rm -r plugins.txt
           rm -r eula.txt
